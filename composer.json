@@ -1,0 +1,33 @@
+{
+    "name": "ericmann/notes-tutorial",
+    "description": "Iterative tutorial illustrating PHP security.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eric Mann",
+            "email": "eric@eamann.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "league/route": "^4.3",
+        "zendframework/zend-diactoros": "^2.2",
+        "zendframework/zend-httphandlerrunner": "^1.1",
+        "ramsey/uuid": "^3.9",
+        "splitbrain/php-cli": "^1.1",
+        "guzzlehttp/guzzle": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Notes\\Module1\\": "module-1/server/"
+        },
+        "files": [
+            "util/Database.php",
+            "util/types/BaseNote.php",
+            "util/types/BaseUser.php",
+            "util/types/Note.php",
+            "util/types/User.php"
+        ]
+    }
+}
