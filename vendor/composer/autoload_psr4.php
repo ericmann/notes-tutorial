@@ -14,6 +14,7 @@ return array(
     'Psr\\Http\\Server\\' => array($vendorDir . '/psr/http-server-handler/src', $vendorDir . '/psr/http-server-middleware/src'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
+    'Notes\\Module2\\' => array($baseDir . '/module-2/server'),
     'Notes\\Module1\\' => array($baseDir . '/module-1/server'),
     'League\\Route\\' => array($vendorDir . '/league/route/src'),
     'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),

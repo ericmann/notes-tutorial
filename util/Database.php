@@ -69,6 +69,19 @@ class Database
 		return $userId;
 	}
 
+	public function updateUserPassword(User $user): bool
+	{
+		$userData =  new BaseUser();
+		$userData->greeting = $user->greeting;
+		$userData->email = $user->email;
+		$userData->password = $user->password;
+
+		$statement = $this->handle->prepare('UPDATE users SET data = :data WHERE userId = :userId');
+		$statement->execute([':data' => json_encode($userData), 'userId' => $user->userId]);
+
+		return $statement->rowCount() > 0;
+	}
+
 	public function createNote(BaseNote $noteData): string
 	{
 		$noteId = Uuid::uuid4()->toString();

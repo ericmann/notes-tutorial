@@ -55,6 +55,7 @@ class ComposerStaticInite8d69a9c610684d4ceded15f33142591
         ),
         'N' => 
         array (
+            'Notes\\Module2\\' => 14,
             'Notes\\Module1\\' => 14,
         ),
         'L' => 
@@ -107,6 +108,10 @@ class ComposerStaticInite8d69a9c610684d4ceded15f33142591
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Notes\\Module2\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/module-2/server',
         ),
         'Notes\\Module1\\' => 
         array (

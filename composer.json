@@ -20,7 +20,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Notes\\Module1\\": "module-1/server/"
+            "Notes\\Module1\\": "module-1/server/",
+            "Notes\\Module2\\": "module-2/server/"
         },
         "files": [
             "util/Database.php",
