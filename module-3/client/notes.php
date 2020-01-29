@@ -8,12 +8,13 @@ use splitbrain\phpcli\Colors;
 use splitbrain\phpcli\Options;
 use splitbrain\phpcli\TableFormatter;
 
-class Module2 extends CLI
+class Module3 extends CLI
 {
 	/**
 	 * @var GuzzleHttp\Client
 	 */
 	private $client;
+	private $token;
 
 	private $user;
 
@@ -33,6 +34,7 @@ class Module2 extends CLI
 
 		$options->registerCommand('register', 'Create a user account.');
 		$options->registerCommand('changePassword', 'Change your user password');
+		$options->registerCommand('login', 'Create a persistent authentication session');
 
 		$options->registerArgument('note', 'Actual note to store.', true, 'create');
 		$options->registerArgument('noteId', 'Identify the note to retrieve.', true, 'get');
@@ -47,12 +49,13 @@ class Module2 extends CLI
 		$options->registerOption('new-password', 'New login password', 'p', true, 'changePassword');
 		$options->registerOption('repeat-password', 'New login password (again)', 'r', true, 'changePassword');
 
-		foreach (['create', 'get', 'delete', 'all'] as $command) {
+		foreach (['create', 'get', 'delete', 'all', 'login'] as $command) {
 			$options->registerOption('email', 'Email address', 'e', true, $command);
 			$options->registerOption('password', 'Login password', 'p', true, $command);
 		}
 
 		$this->client = new GuzzleHttp\Client(['base_uri' => 'http://localhost:8888']);
+		$this->token = file_get_contents('.session');
 	}
 
 	protected function createNote($contents)
@@ -66,9 +69,11 @@ class Module2 extends CLI
 			'note' => $contents
 		];
 
-		$response = $this->client->request('POST', 'notes', [
+		$response = $this->client->request(
+			'POST',
+			'notes', [
 			'body' => json_encode($jsonBody),
-			'auth' => [$this->user, $this->pass]
+			'auth' => [$this->user, $this->pass] // @TODO Replace basic auth with Bearer auth
 		]);
 
 		if ($response->getStatusCode() === 200) {
@@ -116,7 +121,11 @@ class Module2 extends CLI
 
 	protected function getNote($noteId)
 	{
-		$response = $this->client->request('GET', sprintf('notes/%s', $noteId), ['auth' => [$this->user, $this->pass]]);
+		$response = $this->client->request(
+			'GET',
+			sprintf('notes/%s', $noteId),
+			['auth' => [$this->user, $this->pass]] // @TODO Replace basic auth with Bearer auth
+		);
 
 		if ($response->getStatusCode() === 200) {
 			$return = json_decode($response->getBody(), true);
@@ -134,7 +143,11 @@ class Module2 extends CLI
 	protected function deleteNote($noteId)
 	{
 		try {
-			$this->client->request('DELETE', sprintf('notes/%s', $noteId), ['auth' => [$this->user, $this->pass]]);
+			$this->client->request(
+				'DELETE',
+				sprintf('notes/%s', $noteId),
+				['auth' => [$this->user, $this->pass]] // @TODO Replace basic auth with Bearer auth
+			);
 			$this->info(sprintf('Note ID %s has been deleted.', $noteId));
 		} catch (\GuzzleHttp\Exception\BadResponseException $e) {
 			$this->error(sprintf('Unable to delete note %s. It might not exist!', $noteId));
@@ -143,7 +156,11 @@ class Module2 extends CLI
 
 	protected function getAllNotes()
 	{
-		$response = $this->client->request('GET', 'notes', ['auth' => [$this->user, $this->pass]]);
+		$response = $this->client->request(
+			'GET',
+			'notes',
+			['auth' => [$this->user, $this->pass]] // @TODO Replace basic auth with Bearer auth
+		);
 
 		if ($response->getStatusCode() === 200) {
 			$notes = json_decode($response->getBody(), true);
@@ -247,6 +264,35 @@ class Module2 extends CLI
 		}
 	}
 
+	protected function login(Options $options)
+	{
+		try {
+			$response = $this->client->request('GET', 'login', ['auth' => [$this->user, $this->pass]]);
+
+			if ($response->getStatusCode() === 200) {
+				$auth = json_decode($response->getBody(), true);
+
+				if (empty($auth)) {
+					$this->error('Could not establish a session!');
+				} else {
+					$token = $auth['token'];
+
+					try {
+						$fp = fopen('.session', 'w');
+						fwrite($fp, $token);
+						fclose($fp);
+
+						$this->info('Established a persistent session. Commence note taking!');
+					} catch (\Exception $e) {
+						$this->error('Could not establish a session!');
+					}
+				}
+			}
+		} catch(\GuzzleHttp\Exception\BadResponseException $e) {
+			$this->error('Could not establish a session!');
+		}
+	}
+
 	protected function main(Options $options)
 	{
 		$args = $options->getArgs();
@@ -272,6 +318,9 @@ class Module2 extends CLI
 			case 'changePassword':
 				$this->changePassword($options);
 				break;
+			case 'login':
+				$this->login($options);
+				break;
 			default:
 				$this->error('No known command was called, we show the default help instead:');
 				echo $options->help();
@@ -280,5 +329,5 @@ class Module2 extends CLI
 	}
 }
 
-$cli = new Module2();
+$cli = new Module3();
 $cli->run();

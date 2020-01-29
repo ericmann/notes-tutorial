@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Notes\Module2;
+namespace Notes\Module3;
 
+use GuzzleHttp\Exception\BadResponseException;
 use League\Route\Http\Exception\BadRequestException;
 use League\Route\Http\Exception\ForbiddenException;
 use Notes\Util\Database;
@@ -112,7 +113,7 @@ class Server
 			// Create the user when we throw a not found exception!
 			$user = new BaseUser();
 			$user->email = $parsed['email'];
-			$user->password = $parsed['password']; // @TODO This should be hashed!
+			$user->password = password_hash($parsed['password'], PASSWORD_BCRYPT, ['cost' => 11]);
 			$user->greeting = isset($parsed['greeting']) ? $parsed['greeting'] : 'Friend';
 
 			$userId = $this->db->createUser($user);
@@ -140,8 +141,7 @@ class Server
 			throw new BadRequestException('No such user!');
 		}
 
-		// @TODO Use better comparisons
-		if (!hash_equals($user->password, $parsed['old_password'])) {
+		if (!password_verify($parsed['old_password'], $user->password)) {
 			throw new BadRequestException('Invalid password!');
 		}
 
@@ -149,13 +149,47 @@ class Server
 			throw new BadRequestException('Passwords must match!');
 		}
 
-		// @TODO This should be hashed!
-		$user->password = $parsed['new_password'];
+		$user->password = password_hash($parsed['new_password'], PASSWORD_BCRYPT, ['cost' => 11]);
 
 		if ($this->db->updateUserPassword($user)) {
 			return new EmptyResponse();
 		}
 
 		throw new \Exception('Server error while updating password.');
+	}
+
+	public static function authenticate(ServerRequestInterface $request): bool
+	{
+		$authentication = $request->getHeader('authorization')[0];
+		$base64Auth = trim(substr($authentication, 5));
+		$decoded = explode(':', base64_decode($base64Auth));
+
+		$db = new Database();
+		try {
+			$user = $db->getUserByEmail($decoded[0]);
+
+			if (password_verify($decoded[1], $user->password)) {
+				if (session_status() !== PHP_SESSION_ACTIVE) {
+					session_start();
+				}
+
+				$_SESSION['userId'] = $user->userId;
+				return true;
+			}
+		} catch (\Exception $e) {}
+
+		return false;
+	}
+
+	public function login(ServerRequestInterface $request): array
+	{
+		if (self::authenticate($request)) {
+			return [
+				'userId' => $_SESSION['userId'],
+				'token'  => session_id()
+			];
+		}
+
+		throw new \Exception('There was a problem in your login attempt');
 	}
 }

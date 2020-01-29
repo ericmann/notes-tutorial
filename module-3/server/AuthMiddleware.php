@@ -1,35 +1,23 @@
 <?php declare(strict_types=1);
 
-namespace Notes\Module2;
+namespace Notes\Module3;
 
-use League\Route\Http\Exception\BadRequestException;
 use League\Route\Http\Exception\ForbiddenException;
-use Notes\Util\Database;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\Response\JsonResponse;
 
 class AuthMiddleware implements MiddlewareInterface
 {
 	public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
 	{
-		$authentication = $request->getHeader('authorization')[0];
-		$base64Auth = trim(substr($authentication, 5));
-		$decoded = explode(':', base64_decode($base64Auth));
+		if (Server::authenticate($request)) {
+			return $handler->handle($request);
+		}
 
-		$db = new Database();
-		try {
-			$user = $db->getUserByEmail($decoded[0]);
-
-			// @TODO Proper hash comparison
-			if (hash_equals($user->password, $decoded[1])) {
-				$_SESSION['userId'] = $user->userId;
-
-				return $handler->handle($request);
-			}
-		} catch (\Exception $e) {}
+		// @TODO Check for a Bearer token and set up the session
+		$authorization = $request->getHeader('authorization')[0];
 
 		throw new ForbiddenException();
 	}
