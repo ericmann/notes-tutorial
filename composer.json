@@ -22,7 +22,8 @@
         "psr-4": {
             "Notes\\Module1\\": "module-1/server/",
             "Notes\\Module2\\": "module-2/server/",
-            "Notes\\Module3\\": "module-3/server/"
+            "Notes\\Module3\\": "module-3/server/",
+            "Notes\\Module4\\": "module-4/server/"
         },
         "files": [
             "util/Database.php",
