@@ -61,4 +61,4 @@ The lessons are structured into the following modules:
 
 Attendees of a live workshop presentation will note the sections on "Environment" and "Server Hardening" from [the workshop slide deck] [slides]. This is an intentional omission. Environment configuration is baked into this project directly and is something we'll discuss in person. Server hardening is also a _production_ configuration topic and is not easily worked through in a workshop environment.
 
-[slides]: TODO
+[slides]: https://speakerdeck.com/ericmann/evolution-of-php-security-2020
