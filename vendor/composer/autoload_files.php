@@ -26,4 +26,5 @@ return array(
     'c9d0da9063cf9b65b10be44e5b3fa4ee' => $baseDir . '/util/types/BaseUser.php',
     'ded838d75be99c071d8c8dfd3dcd7eb2' => $baseDir . '/util/types/Note.php',
     '7f5599034100245602738f9de5ab5067' => $baseDir . '/util/types/User.php',
+    'e49443041f37f76bde59e5a1d4a365e5' => $baseDir . '/module-5/config.php',
 );
