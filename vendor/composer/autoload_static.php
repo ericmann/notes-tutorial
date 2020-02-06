@@ -29,6 +29,7 @@ class ComposerStaticInite8d69a9c610684d4ceded15f33142591
         '7f5599034100245602738f9de5ab5067' => __DIR__ . '/../..' . '/util/types/User.php',
         'dc6c3cf673eed2c7b353da92815b63bb' => __DIR__ . '/../..' . '/module-1/config.php',
         'e49443041f37f76bde59e5a1d4a365e5' => __DIR__ . '/../..' . '/module-5/config.php',
+        '7c0bc123459c21853f041463cf3d2c00' => __DIR__ . '/../..' . '/module-final/config.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -57,6 +58,7 @@ class ComposerStaticInite8d69a9c610684d4ceded15f33142591
         ),
         'N' => 
         array (
+            'Notes\\ModuleFinal\\' => 18,
             'Notes\\Module5\\' => 14,
             'Notes\\Module4\\' => 14,
             'Notes\\Module3\\' => 14,
@@ -113,6 +115,10 @@ class ComposerStaticInite8d69a9c610684d4ceded15f33142591
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Notes\\ModuleFinal\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/module-final/server',
         ),
         'Notes\\Module5\\' => 
         array (

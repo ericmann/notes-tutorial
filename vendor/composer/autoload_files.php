@@ -28,4 +28,5 @@ return array(
     '7f5599034100245602738f9de5ab5067' => $baseDir . '/util/types/User.php',
     'dc6c3cf673eed2c7b353da92815b63bb' => $baseDir . '/module-1/config.php',
     'e49443041f37f76bde59e5a1d4a365e5' => $baseDir . '/module-5/config.php',
+    '7c0bc123459c21853f041463cf3d2c00' => $baseDir . '/module-final/config.php',
 );

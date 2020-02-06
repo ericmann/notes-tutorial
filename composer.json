@@ -24,7 +24,8 @@
             "Notes\\Module2\\": "module-2/server/",
             "Notes\\Module3\\": "module-3/server/",
             "Notes\\Module4\\": "module-4/server/",
-            "Notes\\Module5\\": "module-5/server/"
+            "Notes\\Module5\\": "module-5/server/",
+            "Notes\\ModuleFinal\\": "module-final/server/"
         },
         "files": [
             "util/Database.php",
@@ -33,7 +34,8 @@
             "util/types/Note.php",
             "util/types/User.php",
             "module-1/config.php",
-            "module-5/config.php"
+            "module-5/config.php",
+            "module-final/config.php"
         ]
     }
 }

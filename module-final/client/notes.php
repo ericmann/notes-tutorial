@@ -8,7 +8,7 @@ use splitbrain\phpcli\Colors;
 use splitbrain\phpcli\Options;
 use splitbrain\phpcli\TableFormatter;
 
-class Module3 extends CLI
+class ModuleFinal extends CLI
 {
 	/**
 	 * @var GuzzleHttp\Client
@@ -60,6 +60,11 @@ class Module3 extends CLI
 
 	protected function createNote($contents)
 	{
+		if (empty($this->token)) {
+			$this->error('Please log in first!');
+			return;
+		}
+
 		if (empty($contents)) {
 			$this->error('Invalid/Empty note. Cannot send to server!');
 			return;
@@ -73,7 +78,7 @@ class Module3 extends CLI
 			'POST',
 			'notes', [
 			'body' => json_encode($jsonBody),
-			'auth' => [$this->user, $this->pass] // @TODO Replace basic auth with Bearer auth
+			'headers' => ['Authorization' => sprintf('Bearer %s', $this->token)]
 		]);
 
 		if ($response->getStatusCode() === 200) {
@@ -121,10 +126,15 @@ class Module3 extends CLI
 
 	protected function getNote($noteId)
 	{
+		if (empty($this->token)) {
+			$this->error('Please log in first!');
+			return;
+		}
+
 		$response = $this->client->request(
 			'GET',
 			sprintf('notes/%s', $noteId),
-			['auth' => [$this->user, $this->pass]] // @TODO Replace basic auth with Bearer auth
+			['headers' => ['Authorization' => sprintf('Bearer %s', $this->token)]]
 		);
 
 		if ($response->getStatusCode() === 200) {
@@ -142,11 +152,16 @@ class Module3 extends CLI
 
 	protected function deleteNote($noteId)
 	{
+		if (empty($this->token)) {
+			$this->error('Please log in first!');
+			return;
+		}
+
 		try {
 			$this->client->request(
 				'DELETE',
 				sprintf('notes/%s', $noteId),
-				['auth' => [$this->user, $this->pass]] // @TODO Replace basic auth with Bearer auth
+				['headers' => ['Authorization' => sprintf('Bearer %s', $this->token)]]
 			);
 			$this->info(sprintf('Note ID %s has been deleted.', $noteId));
 		} catch (\GuzzleHttp\Exception\BadResponseException $e) {
@@ -156,10 +171,15 @@ class Module3 extends CLI
 
 	protected function getAllNotes()
 	{
+		if (empty($this->token)) {
+			$this->error('Please log in first!');
+			return;
+		}
+
 		$response = $this->client->request(
 			'GET',
 			'notes',
-			['auth' => [$this->user, $this->pass]] // @TODO Replace basic auth with Bearer auth
+			['headers' => ['Authorization' => sprintf('Bearer %s', $this->token)]]
 		);
 
 		if ($response->getStatusCode() === 200) {
@@ -329,5 +349,5 @@ class Module3 extends CLI
 	}
 }
 
-$cli = new Module3();
+$cli = new ModuleFinal();
 $cli->run();
