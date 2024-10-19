@@ -9,7 +9,8 @@ $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
 $responseFactory = new Laminas\Diactoros\ResponseFactory;
 
 $strategy = new League\Route\Strategy\JsonStrategy($responseFactory);
-$router   = (new League\Route\Router)->setStrategy($strategy);
+$router   = new League\Route\Router;
+$router->setStrategy($strategy);
 
 $router->group('/notes', function(\League\Route\RouteGroup $router) {
 	$router->get('/',        'Notes\Module1\Server::getNotes');
