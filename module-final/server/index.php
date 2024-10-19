@@ -2,11 +2,11 @@
 
 include '../../vendor/autoload.php';
 
-$request = Zend\Diactoros\ServerRequestFactory::fromGlobals(
+$request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
 	$_SERVER, $_GET, $_POST, $_COOKIE, $_FILES
 );
 
-$responseFactory = new Zend\Diactoros\ResponseFactory;
+$responseFactory = new Laminas\Diactoros\ResponseFactory;
 
 $strategy = new League\Route\Strategy\JsonStrategy($responseFactory);
 $router   = new League\Route\Router;
@@ -25,4 +25,4 @@ $router->get('/login',   'Notes\ModuleFinal\Server::login');
 $response = $router->dispatch($request);
 
 // send the response to the browser
-(new Zend\HttpHandlerRunner\Emitter\SapiEmitter)->emit($response);
+(new Laminas\HttpHandlerRunner\Emitter\SapiEmitter)->emit($response);

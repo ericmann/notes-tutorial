@@ -12,7 +12,7 @@ use Notes\Util\Types\Note;
 use Notes\Util\Types\User;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\Response\EmptyResponse;
 
 class Server
 {
