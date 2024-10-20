@@ -24,7 +24,7 @@ class Module2 extends CLI
 
 	protected function setup(Options $options)
 	{
-		$options->setHelp('This client is built to operate against the server defined in Module 1 only.');
+		$options->setHelp('This client is built to operate against the server defined in Module 2 only.');
 
 		$options->registerCommand('create', 'Create a new note.');
 		$options->registerCommand('get', 'Get a specific note.');
