@@ -23,7 +23,7 @@ class ModuleFinal extends CLI
 	const TABLE_WIDTH = ['9', '*'];
 	const TABLE_STYLE = [Colors::C_CYAN, Colors::C_GREEN];
 
-	protected function setup(Options $options)
+	protected function setup(Options $options): void
 	{
 		$options->setHelp('This client is built to operate against the server defined in the final module only.');
 
@@ -58,7 +58,7 @@ class ModuleFinal extends CLI
 		$this->token = @file_get_contents('.session');
 	}
 
-	protected function createNote($contents)
+	protected function createNote(string $contents): void
 	{
 		if (empty($this->token)) {
 			$this->error('Please log in first!');
@@ -103,7 +103,7 @@ class ModuleFinal extends CLI
 		return $tf;
 	}
 
-	private function printNote(array $note, TableFormatter $tf)
+	private function printNote(array $note, TableFormatter $tf): void
 	{
 		echo $tf->format(
 			self::TABLE_WIDTH,
@@ -124,7 +124,7 @@ class ModuleFinal extends CLI
 		);
 	}
 
-	protected function getNote($noteId)
+	protected function getNote(string $noteId): void
 	{
 		if (empty($this->token)) {
 			$this->error('Please log in first!');
@@ -150,7 +150,7 @@ class ModuleFinal extends CLI
 		}
 	}
 
-	protected function deleteNote($noteId)
+	protected function deleteNote(string $noteId): void
 	{
 		if (empty($this->token)) {
 			$this->error('Please log in first!');
@@ -169,7 +169,7 @@ class ModuleFinal extends CLI
 		}
 	}
 
-	protected function getAllNotes()
+	protected function getAllNotes(): void
 	{
 		if (empty($this->token)) {
 			$this->error('Please log in first!');
@@ -197,7 +197,7 @@ class ModuleFinal extends CLI
 		}
 	}
 
-	protected function register(Options $options)
+	protected function register(Options $options): void
 	{
 		$email = $options->getOpt('email');
 		$password = $options->getOpt('password');
@@ -242,7 +242,7 @@ class ModuleFinal extends CLI
 		}
 	}
 
-	protected function changePassword(Options $options)
+	protected function changePassword(Options $options): void
 	{
 		$email = $options->getOpt('email');
 		$oldPassword = $options->getOpt('old-password');
@@ -284,7 +284,7 @@ class ModuleFinal extends CLI
 		}
 	}
 
-	protected function login(Options $options)
+	protected function login(Options $options): void
 	{
 		try {
 			$response = $this->client->request('GET', 'login', ['auth' => [$this->user, $this->pass]]);
@@ -313,7 +313,7 @@ class ModuleFinal extends CLI
 		}
 	}
 
-	protected function main(Options $options)
+	protected function main(Options $options): void
 	{
 		$args = $options->getArgs();
 		$this->user = $options->getOpt('email');

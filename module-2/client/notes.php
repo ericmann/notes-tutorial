@@ -22,7 +22,7 @@ class Module2 extends CLI
 	const TABLE_WIDTH = ['9', '*'];
 	const TABLE_STYLE = [Colors::C_CYAN, Colors::C_GREEN];
 
-	protected function setup(Options $options)
+	protected function setup(Options $options): void
 	{
 		$options->setHelp('This client is built to operate against the server defined in Module 2 only.');
 
@@ -55,7 +55,7 @@ class Module2 extends CLI
 		$this->client = new GuzzleHttp\Client(['base_uri' => 'http://localhost:8888']);
 	}
 
-	protected function createNote($contents)
+	protected function createNote(string $contents): void
 	{
 		if (empty($contents)) {
 			$this->error('Invalid/Empty note. Cannot send to server!');
@@ -93,7 +93,7 @@ class Module2 extends CLI
 		return $tf;
 	}
 
-	private function printNote(array $note, TableFormatter $tf)
+	private function printNote(array $note, TableFormatter $tf): void
 	{
 		echo $tf->format(
 			self::TABLE_WIDTH,
@@ -114,7 +114,7 @@ class Module2 extends CLI
 		);
 	}
 
-	protected function getNote($noteId)
+	protected function getNote(string $noteId): void
 	{
 		$response = $this->client->request('GET', sprintf('notes/%s', $noteId), ['auth' => [$this->user, $this->pass]]);
 
@@ -131,7 +131,7 @@ class Module2 extends CLI
 		}
 	}
 
-	protected function deleteNote($noteId)
+	protected function deleteNote(string $noteId): void
 	{
 		try {
 			$this->client->request('DELETE', sprintf('notes/%s', $noteId), ['auth' => [$this->user, $this->pass]]);
@@ -141,7 +141,7 @@ class Module2 extends CLI
 		}
 	}
 
-	protected function getAllNotes()
+	protected function getAllNotes(): void
 	{
 		$response = $this->client->request('GET', 'notes', ['auth' => [$this->user, $this->pass]]);
 
@@ -160,7 +160,7 @@ class Module2 extends CLI
 		}
 	}
 
-	protected function register(Options $options)
+	protected function register(Options $options): void
 	{
 		$email = $options->getOpt('email');
 		$password = $options->getOpt('password');
@@ -205,7 +205,7 @@ class Module2 extends CLI
 		}
 	}
 
-	protected function changePassword(Options $options)
+	protected function changePassword(Options $options): void
 	{
 		$email = $options->getOpt('email');
 		$oldPassword = $options->getOpt('old-password');
@@ -247,7 +247,7 @@ class Module2 extends CLI
 		}
 	}
 
-	protected function main(Options $options)
+	protected function main(Options $options): void
 	{
 		$args = $options->getArgs();
 		$this->user = $options->getOpt('email');
