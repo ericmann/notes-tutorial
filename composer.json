@@ -11,7 +11,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "league/route": "^5.1",
+        "league/route": "^6.2",
         "laminas/laminas-diactoros": "^3.5",
         "laminas/laminas-httphandlerrunner": "^2.11",
         "ramsey/uuid": "^4.7",
